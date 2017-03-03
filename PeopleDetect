@@ -1,0 +1,22 @@
+peopleDetector = vision.PeopleDetector;
+I = imread('people.jpg');
+
+
+
+%Detect people using the people detector object.
+[bboxes, scores] = step(peopleDetector, I); 
+
+
+%Create a shape inserter and a score inserter.
+shapeInserter = vision.ShapeInserter('BorderColor','Custom','CustomBorderColor',[255 255 0]);
+     
+scoreInserter = vision.TextInserter('Text',' %f','Color', [0 80 255],'LocationSource','Input port','FontSize',16);
+
+
+
+%Draw detected bounding boxes, and insert scores usingthe inserter objects.
+ I = step(shapeInserter, I, int32(bboxes));
+ I = step(scoreInserter, I, scores, int32(bboxes(:,1:2))); 
+
+figure, imshow(I)
+title('Detected people and detection scores'); 

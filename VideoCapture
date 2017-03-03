@@ -1,0 +1,31 @@
+//#include "opencv2/stdafx/stdafx.h"
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+#include <iostream>
+#include <stdio.h>
+#ifdef _EiC
+#define WIN32
+#endif
+char path[50];
+int main ( int argc, const char* argv[] ){
+    CvCapture* capture = cvCaptureFromCAM(0);
+    IplImage* image = 0;
+    cvNamedWindow("Window");
+    int count = 1;
+    while (true)
+    {
+        image = cvQueryFrame(capture); 
+        cvShowImage("Window", image);
+        int ch = cvWaitKey(1);
+        if(ch == 115){
+            sprintf(path,"d:/OpenCV/captured%d.bmp",count++);
+            cvSaveImage(path,image,0);
+        }
+        if(ch == 27) break;
+    }
+    cvDestroyWindow("Window");
+    cvReleaseCapture(&capture);
+   return 0;
+}
